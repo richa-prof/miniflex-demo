@@ -5,16 +5,17 @@
 #   gem 'sqlite3'
 default: &default
   adapter: postgresql
-  encoding: utf8
-  pool: 5
-  username: postgres
-  password: 12345678
-  host: localhost
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: miniflex-demo-dev
+  database: miniflex-demo_development
 
 production:
   <<: *default
-  database: miniflex-demo-pro
+  database: miniflex-demo_production
+  username: miniflex-demo
+  password: <%= ENV['MiniflexDemo_DATABASE_PASSWORD'] %>
