@@ -1,0 +1,5 @@
+<% if current_user.following?(object) %>
+  <%= link_to "Unfollow", unfollow_movie_path(id: object.id, type: object.class.name), class: "btn btn-primary", remote: true, id: follow_link_id(object) %></td>
+<% else %>
+  <%= link_to "Follow", follow_movie_path(id: object.id, type: object.class.name), class: "btn btn-primary", remote: true, id: follow_link_id(object) %></td>
+<% end %>

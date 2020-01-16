@@ -12,12 +12,10 @@
   <td><%= movie.title %></td>
   <td><%= fetch_name(movie.genres) %></td>
   <td><%= fetch_name(movie.stars) %></td>
-  <td>
-    <% if current_user.following?(movie) %>
-      <%= link_to "Unfollow", unfollow_movie_path(:id => movie.id, type: "Movie"), :method => :get, :class => "btn btn-primary"%></td>
-    <% else %>
-      <%= link_to "Follow", follow_movie_path(:id => movie.id, type: "Movie"), :method => :get, :class => "btn btn-primary"%></td>
-    <% end %>
+  <td id="<%= follow_link_id(movie) %>">
+    <%= render 'follows_links', object: movie %>
+  <td>  
  </tr>
  <% end %>
 </table>
+<%= will_paginate @movies, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
