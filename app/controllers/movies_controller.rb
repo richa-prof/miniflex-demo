@@ -1,3 +1,4 @@
+require 'will_paginate/array'
 class MoviesController < ApplicationController
   before_action :find_movie, except: [:index]
 
@@ -14,14 +15,8 @@ class MoviesController < ApplicationController
     elsif params[:tab] == "Suggest"
       @movies = []
       @page_tab = "suggest"
-
       return unless Follow.any?
       user_follows
-      # genre_names = fetch_genre_names
-      # star_names = fetch_star_names
-      # @movies_by_genres = Movie.joins(:genres).where(genres: {name: genre_names}).uniq
-      # @movies_by_stars = Movie.joins(:stars).where(stars: { name: star_names}).uniq
-      # @movies = @movies_by_genres | @movies_by_stars
     end
   end
 
@@ -50,7 +45,7 @@ class MoviesController < ApplicationController
   def user_follows
     stars_ids = current_user.follows_by_type('Stars').map(&:followable_id)
     genres_ids = current_user.follows_by_type('Genre').map(&:followable_id)
-    @movies = Movie.suggests_movies(stars_ids, genres_ids)
+    @movies = Movie.suggests_movies(stars_ids, genres_ids).paginate(:page => params[:page], :per_page => 20)
   end
 
   def fetch_follow_movies
